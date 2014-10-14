@@ -1,0 +1,103 @@
+<dl class="accordion" ng-init="accordion= {}"  data-accordion>
+
+    <!-- Product Description -->
+	<dd>
+		<div class="row collapse" style="margin-bottom: 10px;">
+		   <div class="large-2 medium-2 small-2 columns ">
+		       <img style="margin: 0 auto;" ng-src="data:image/JPEG;base64,{{product.ThumbImageB64__c}}">
+		   </div>
+		   <div class="large-10 medium-10 small-10 columns">
+               <h3>New Report:</h3>
+		       <p ><span ng-bind="product.Name"/></p>
+		      <!-- <hr style="margin: 5px;"/>
+		       Configured Price <i class="fi-pound" style="font-size: 18px; margin: 2px;"></i><span ng-bind="productConfigPrice"/> -->
+				   <button ng-click="toggleAccordion('_Desc')" class="radius expand" style="color: #1099C1;  background-color: white; border: solid #ddd; border-width: 1px ;">
+                        {{product.Type}} show product details
+					     <i class="right" style="font-size: 20px; margin-right: 10px;" ng-class="{'fi-zoom-out': accordion['_Desc'], 'fi-magnifying-glass': !accordion['_Desc'] }"></i>
+				 	</button>
+		   </div>
+		</div>
+
+		<div id="panelContent_Desc" class="content" style="padding: 0px;">
+		   <div class="row"   ng-click="toggleAccordion(_Desc)"  style="border: solid 1px #c6c6c6; border-top: 0px;">
+		      <div class="large-12 medium-12 small-12 columns"><span ng-bind-html="getRichDescroption()"></span></div>
+		   </div>
+		</div>
+	</dd>
+
+    <!-- Config Options -->
+	<dd ng-repeat="fieldnm in productConfigMetaData track by fieldnm.name" style="border: solid 1px white;">
+
+        <!-- Config Category -->
+        <a  ng-click="toggleAccordion($index)" style="vertical-align: middle; padding: 1px; color: white;" ng-style="{'background-color':fieldnm.color}">  <!--  ng-class="{'doneit': productConfig[fieldnm.name], 'notdoneit': !productConfig[fieldnm.name]}" -->
+            <div class="row">
+                <div class="columns large-2 medium-2 small-2">
+                <!--    <i style="font-size: 28px; float: left;" class="fi-{{fieldnm.icon}}"></i> -->
+                    <div style=" margin-top: 10px;">
+                        <i style="font-size: 28px; " ng-show="productConfig[fieldnm.name]"  class="fi-checkbox"/>
+                    </div>
+
+               </div>
+               <div class="columns large-7 medium-7 small-6">
+                   <div style="line-height: 4; text-transform: uppercase; white-space: nowrap; margin-top: 5px;"  ng-bind="fieldnm.name"/>
+                   <!--
+                    <div style="margin-top: 10px;" ng-hide="productConfig[fieldnm.name]">
+                       <span ng-bind="fieldnm.values.length"></span> options
+                   </div>
+                   <div  ng-show="productConfig[fieldnm.name]" class="" style="font-weight: bold; margin: 1px 0 0 0;padding: .60rem;" ng-bind="productConfig[fieldnm.name]"/>
+                    -->
+               </div>
+               <div class="columns large-1 medium-1 small-2">
+                   <div style="margin-right: 10px;  margin-top: 12px;">
+                       <i style="font-size: 28px; font-weight: 40;" ng-class="{'fi-minus': (accordion[$index]), 'fi-plus': (!accordion[$index])}"></i>
+                   </div>
+               </div>
+          </div>
+       </a>
+
+        <!-- Config Category values -->
+       <div  id="panelContent{{$index}}" class="content" style="padding: 0px;" >
+
+           <div class="row"  ng-repeat="valnm in fieldnm.values"  style="border-bottom: solid 1px #c6c6c6;" ng-class="{'selectedbg' : isFilterSelected(fieldnm.name, valnm.name)}" >
+
+               <div class="small-2 columns ">
+                   <div style="line-height: 2; margin-top: 8px;"><i style="font-size: 24px; float: left;" class="fi-{{fieldnm.icon}}"></i></div>
+               </div>
+               <div class="columns large-7 medium-7 small-6"  ng-click="addselection($parent.$index, fieldnm.name, valnm.name);">
+               	    <div style="line-height: 3.2;" ng-bind="valnm.name"/>
+               </div>
+               <div class="columns large-1 medium-1 small-2 ">
+                  <a ng-click="openhelp(fieldnm, valnm);">
+                      <div style="line-height: 2.5;  margin-top: 10px;"><i class="fi-magnifying-glass" style="font-size: 18px; "></i></div>
+                  </a>
+               	<!-- <span style="font-size: 90%;" ng-bind="valnm.price"/> -->
+               </div>
+            </div>
+
+        </div>
+    </dd>
+</dl>
+<div class="row">
+    <div class="large-12" style="border: solid 1px white;">
+        <button class="button expand" ng-disabled="!enableaddtocart" ng-click="addtobasket()" ng-class="{'vodPurple': enableaddtocart, 'notdoneit': !enableaddtocart}">Save Report</button>
+    </div>
+
+</div>
+
+<div id="help_modal" class="firstModal reveal-modal " data-reveal="1" style=" top: 50px;" >  <!-- style="left: 50%;  width: 45%;  top: 50px; min-height: 270px;" -->
+    <h5 ng-bind="helptxt"></h5>
+    <img src="http://i.dailymail.co.uk/i/pix/2014/06/04/article-2648522-1E75E25E00000578-487_634x395.jpg"/>
+    <hr/>
+    <a class="button expand" onclick="jQuery('#help_modal').foundation('reveal', 'close');">No help!</a>
+    <a class="button expand" onclick="jQuery('#help_modal').foundation('reveal', 'close');">Thats Helped, thanks</a>
+</div>
+
+<div id="itemadded_modal" class="firstModal reveal-modal tiny" data-reveal="1" style="left: 50%;  width: 45%;  top: 50px; min-height: 270px;">
+    <p>Your Report has been added to your Visit</p>
+    <hr/>
+    <a class="button expand" href="#/search" onclick="jQuery('#itemadded_modal').foundation('reveal', 'close');">Add another Report</a>
+    <a class="button expand" href="#/basket" onclick="jQuery('#itemadded_modal').foundation('reveal', 'close');">Submit Report</a>
+</div>
+
+
+

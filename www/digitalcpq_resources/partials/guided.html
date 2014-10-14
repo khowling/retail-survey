@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="large-12 columns small-12">
+    <dl ng-init="accordion= {}" class="accordion" data-accordion>
+        <dd  ng-repeat="fieldnm in facetorder">
+            <a ng-click="toggleAccordion(fieldnm)"><span ng-bind="fieldnm | sfnametolabel"/> (<span ng-bind="data.facetcounts[fieldnm]"></span>)
+                <i class="right" ng-class="{'fi fi-minus': accordion[fieldnm], 'fi fi-plus': !accordion[fieldnm]}"></i>
+            </a>
+            <div id="panelContent{{fieldnm}}" class="content ">
+
+                <ul style="line-height: 1; padding: 0;">
+                    <li ng-repeat="(valnm, cnt) in data.facetresults[fieldnm]">
+                        <div ng-class="{'alert-box warning round' : isFilterSelected(fieldnm, valnm)}" style="padding-top: 5px; padding-bottom: 5px;">
+                            <a ng-click="toggleFilter(fieldnm, valnm);  search(searchparam);"><span ng-bind="valnm
+                            | sfnametolabel"/> (<span ng-bind="cnt"/>)</a>
+                            <a ng-show="isFilterSelected(fieldnm, valnm)" href="#" class="close">&times;</a>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </dd>
+    </dl>
+    </div>
+</div>
+
+<div class="row" ng-repeat="o1 in data.res">
+    <div class="large-2 small-2 columns">
+        <img
+                ng-src="https://eu2.salesforce.com/sfc/servlet.shepherd/version/download/{{o1.ThumbImageId__c}}">
+    </div>
+    <div class="large-10 small-10 columns">
+        <p style="font-size: 80%; margin-bottom: 5px;">
+            <strong>{{o1.Type__c}}: <a target="_top"
+                                       href="{{instanceUrl}}/{{o1.id}}">{{o1.Name}}</a></strong> Colour:
+            {{o1.Colour__c}}, Internal Memory: {{o1.Memory_Gb__c}},
+            Operating System: {{o1.Operating_system__c}}, Camera MP:
+            {{o1.Camera__c}}, SIM Type: {{o1.SIM_Size__c}}
+        </p>
+
+
+        <ul class="inline-list" style="margin-left: 0px; margin-bottom: 5px;">
+            <li ng-repeat="skill in o1.Available_Tariffs__c"
+                style="margin: 0px 2px 2px 0px;"><span style="font-size: 60%;"
+                                                       class="radius success label">{{skill}}</span></li>
+        </ul>
+
+
+        <div class="button-bar">
+            <ul class="button-group">
+
+                <li><a class="tiny button" href="#/configure/{{o1.id}}">configure</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <hr tyle="margin-top: 0px;" />
+</div>

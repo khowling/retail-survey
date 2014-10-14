@@ -1,0 +1,531 @@
+@font-face {
+    font-family: 'AvenirNextLTPro-Regular';
+    src: url("/css/fonts/avenir-next/279C63_8_0.eot");
+    src: url("/css/fonts/avenir-next/279C63_8_0.eot?#iefix") format("embedded-opentype"), url("../css/fonts/avenir-next/279C63_8_0.woff") format("woff"), url("../css/fonts/avenir-next/279C63_8_0.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'AvenirNextLTPro-Medium';
+    src: url("../css/fonts/avenir-next/279C63_9_0.eot");
+    src: url("../css/fonts/avenir-next/279C63_9_0.eot?#iefix") format("embedded-opentype"), url("../css/fonts/avenir-next/279C63_9_0.woff") format("woff"), url("../css/fonts/avenir-next/279C63_9_0.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: 'AvenirNextLTCom-Cn';
+    src: url("../css/fonts/avenir-next-condensed/2951CB_1_0.eot");
+    src: url("../css/fonts/avenir-next-condensed/2951CB_1_0.eot?#iefix") format("embedded-opentype"), url("../css/fonts/avenir-next-condensed/2951CB_1_0.woff") format("woff"), url("../css/fonts/avenir-next-condensed/2951CB_1_0.ttf") format("truetype"), url("../css/fonts/avenir-next-condensed/2951CB_1_0.svg#wf") format("svg");
+}
+
+
+/* Foundation prevent empty columns from dissapering */
+.column, .columns{
+    min-height: 1px;
+}
+
+p, li {
+    color: #5a5a5a;
+    line-height: 1.5;
+    font-size: 16px;
+    //font-family: "AvenirNextLTPro-Regular";
+}
+
+h3 {
+    font-family: "AvenirNextLTPro-Medium";
+    text-transform: uppercase;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+
+div.switch1 input:checked + label:after {
+left: 2.25rem;
+}
+div.switch1 input {
+	display: none;
+}
+div.switch1 label {
+	display: block;
+//	margin-bottom: 1rem;
+	position: relative;
+	color: transparent;
+	background: #ddd;
+	text-indent: 100%;
+	width: 4rem;
+	height: 2rem;
+	cursor: pointer;
+	transition: left 0.15s ease-out;
+}
+div.switch1 label:after {
+	content: "";
+	display: block;
+	background: #fff;
+	position: absolute;
+	top: 0.25rem;
+	left: 0.25rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	-webkit-transition: left 0.15s ease-out;
+	-moz-transition: left 0.15s ease-out;
+	transition: left 0.15s ease-out;
+}
+div.switch1 label {
+	width: 4rem;
+	height: 2rem;
+}
+div.switch1 input + label {
+	margin-left: 0;
+	margin-right: 0;
+}
+div.switch1 label:after {
+background: #fff;
+}
+div.switch1 label {
+	color: transparent;
+	background: #ddd;
+}
+div.switch1 input:checked + label {
+	background: #008CBA;
+}
+div.switch1 label:after {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+input.ng-invalid.ng-dirty, input.ng-invalid, textarea.ng-invalid.ng-dirty, textarea.ng-invalid {
+    border-color: #e9322d;
+    -webkit-box-shadow: 0 0 12px #f8b9b7;
+    -moz-box-shadow: 0 0 12px #f8b9b7;
+    box-shadow: 0 0 12px #f8b9b7;
+}
+
+
+/* FIX for the Foundation5 off-canvas scroll issue 
+.off-canvas-fixed {
+    -webkit-transition: -webkit-transform 500ms ease;
+    transition: transform 500ms ease;
+}
+
+.move-right > .off-canvas-fixed {
+    height: 100%;
+    -webkit-transform: translate3d(15.625rem, 0, 0);
+    transform: translate3d(15.625rem, 0, 0);
+}
+
+.left-off-canvas-menu {
+    -webkit-transform: none;
+    transform: none;
+    margin-left: -15.625rem;
+
+}
+
+.move-left > .off-canvas-fixed {
+    height: 100%;
+    -webkit-transform: translate3d(-15.625rem, 0, 0);
+    transform: translate3d(-15.625rem, 0, 0);
+}
+
+.right-off-canvas-menu {
+    -webkit-transform: none;
+    transform: none;
+    margin-right: -15.625rem;
+    height: 100vh;
+}
+*/
+
+/* Container for the ng-view animation */
+.ngViewContainer {
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.view-animate.ng-enter, .view-animate.ng-leave {
+    -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+
+    display:block;
+    position:absolute;  top:0;  left:0;  right:0; width:100%;
+
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+
+//  transition-duration: .25s;
+}
+
+.view-animate.ng-enter {
+//  left:100%;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+}
+.view-animate.ng-enter.ng-enter-active {
+//	  left:0;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+.view-animate.ng-leave.ng-leave-active {
+//  left:-100%;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+}
+
+p {
+    line-height: 1.3;
+}
+
+
+
+
+/* Sean Finucane SSE Ammended CSS */
+
+/* Header */
+
+.logoWrap {
+    float: left;
+}
+
+.logoTopWrap {
+    height: 45px;
+    position: relative;
+}
+
+.logoHead {
+    vertical-align: top;
+    height: 45px;
+}
+
+nav.tab-bar {
+ //   background: #e60000 !important;
+    background: #1099C1 !important;
+
+
+
+}
+div.switch1 input:checked + label {
+    background: #fff !important;
+    border-radius: 3px !important;
+}
+div.switch1 input:checked + label:after {
+    background: #1099C1 !important;
+}
+.fi-list:before {
+    color:#fff;
+}
+.subheading .ng-binding {
+    color:#fff !important;
+}
+
+.mun {
+    color:#1099C1 !important;
+}
+.headBtn {
+    background: #fff;
+}
+
+.tab-bar-section.right {
+    position: relative;
+    float: right;
+    padding:0;
+    left:0;
+}
+
+.switchWrap {
+    float: right;
+    width: 126px;
+    margin-right: 5px;
+    margin-top: 1px;
+}
+
+.cartWrap {
+    margin-right: 5px;
+}
+
+.hamWrap {
+    background: #fff !important;
+    float: left;
+    position: relative;
+}
+.ham:before {
+    /* color:#1099C1 !important; */
+}
+
+.lrgLogoWrap {
+    padding-left: 0px !important;
+    left:0 !important;
+    right:0 !important;
+
+}
+
+/* Common */
+
+body {
+//    background: #ebebeb;
+//			background: #f8f8f8;
+}
+
+button, .button {
+    border-radius: 3px !important;
+}
+
+.vodRed {
+    color:#1099C1 !important;
+}
+.vodBg {
+    background: #1099C1 !important;
+}
+
+.rArrow {
+    background-repeat: no-repeat !important;
+    background-position: right 13px top 20px !important;
+    background-size: 11px !important;
+    background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1MHB4JyBoZWlnaHQ9JzUwcHgnPjxwb2x5bGluZSBwb2ludHM9JzQ2LjEzOSwxNS41MTggMjUuMTY2LDM2LjQ5IDQuMTkzLDE1LjUxOScgc3R5bGU9J2ZpbGw6ICNmZmY7Jy8+PC9zdmc+");
+}
+.vodPurple {
+    background-color: #9c2aa0 !important;
+    opacity: 1 !important;
+}
+
+/* Product page */
+
+.pricing-table .title {
+    background-color: #FFF;
+    background-color: #FFF;
+    color: #1099C1;
+    text-align: left;
+    border-bottom: 1px solid #cacaca;
+    font-weight: bold;        
+}
+
+.pricing-table .price {
+    text-align: left; 
+}
+
+.postfix.button {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+
+
+
+
+/* Confgiure Page */
+
+a.tiny {
+    background-color: #9c2aa0 !important;
+}
+
+.button.filterSelected {
+    background: #008cba !important;
+    text-align: left;
+}
+.button.filterNotSelected {
+    background: #c5c5c5 !important;
+    text-align: left;
+}
+
+/* Basket */
+
+.panel {
+    background: #fff;
+}
+
+.panel .button {
+    background-color:#1099C1 !important;
+}
+
+
+.totalWrap {
+    background: #54575a;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    color:#fff;
+    height: 47px;
+}
+.totInner {
+    width:90%;
+    margin:0 auto;
+    padding-left:5%;
+    padding-right:5%;
+}
+.totalWrap span.l {
+    float: left;
+    margin-top: 15px;
+    padding-left: 15px;
+}
+.totalWrap span.r {
+    float: right;
+    margin-top: 15px;
+    padding-right: 15px;
+}
+
+
+.panelBasket {
+    padding-bottom: 0px !important;
+    margin-bottom:0px !important;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.pOrder {
+    margin-top: 15px;
+}
+.selCust {
+    margin-bottom: 1rem !important;
+}
+
+.basketWrap {
+    margin-right: 0.9375rem;
+}
+
+#itemadded_modal {
+    border-radius:5px !important;
+}
+
+
+/* Main Page */
+
+.mainWrap {
+    margin-top: 5px;
+}
+
+
+/* Offer Page */
+
+.offer {
+    padding-right: 0.9375rem !important;
+    padding-left: 0rem;
+    border-radius: 5px;
+}
+
+.pricing-table li {
+    text-align: left !important;
+}
+
+.pricing-table {
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+}
+ul.pricing-table li:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+ul.pricing-table li:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}    
+
+li.check {
+    background: url(../img/sse-images/check.png) no-repeat 7% 50%;
+    background-size: 12px;
+    padding-left: 34px !important;
+    border: none !important;
+}
+li.prev {
+   padding: 0.9375rem;
+    background: #fff; 
+}
+.offerBtn {
+    width: 100% !important;
+    background-color: #ebebed !important;
+    color: #555;
+    text-align: left;
+}
+.offerBtn:hover {
+    color:#e60000 !important;
+}
+
+/* Configure page */
+
+.notdoneit {
+    background: #8d218d !important;
+ // background: #5b5b5b !important;
+    color: white!important;
+}
+.doneit {
+	background: #e60000 !important;
+	color: white!important;
+}
+
+.selectedbg {
+    background: #b3b3b3 !important;
+}
+.dropper {
+    background: #fff !important;
+}
+
+#configLeft {
+    width: 20%;
+    float: left;
+}
+#configLeft img {
+    border: 1px solid #C2C2C2;
+    padding: 15px;
+    background: #fff;
+}
+#configRight {
+    width: 80%;
+    float: right;
+}
+
+/* Checkout */
+.label.success {
+    border-radius: 5px !important;
+}
+.basketContWrap {
+   padding-left: 15px; 
+}
+.side-nav li a:not(.button) {
+    padding: 0.4375rem 0.0rem;
+}
+
+/* Home page */
+
+#offerWrap {
+    width: 100%;
+    border-radius: 5px;
+    padding-left: 16px;
+    padding-right: 16px;
+    background: #fff;
+    border: solid 1px #cccccc;
+    margin-bottom: 15px;
+}
+
+h5.homeHead {
+    text-align: left !important;
+    font-weight: bold;
+    color: #3A3A3A;
+   // border-bottom: 1px solid #E2E2E2;
+    padding-bottom: 0px;
+    margin-top: 0.4rem !important;
+}
+.subDescrip {
+    font-size: 0.9rem;
+}
+.parentOffWrap {
+    margin-bottom: 12px;
+    width: 40%;
+    padding: 0px 15px 0px 0px !important;
+    min-width: 300px;
+}
+
+
+/* Media Queries */
+
+@media screen and (max-width:480px) {
+
+    .logoWrap {
+        display: none;
+    }
+}  
+@media screen and (min-width:600px) {
+
+    .ham {
+        //display: none;
+    }
+
+}    
+

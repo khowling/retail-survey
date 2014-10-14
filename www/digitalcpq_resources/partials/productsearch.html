@@ -1,0 +1,138 @@
+
+<!-- 
+<div class="row show-for-small-down collapse" style="padding-bottom: 0px; padding-top: 0px; margin-bottom: 10px;">
+    <div ng-show="filtersCount() > 0" class="small-5 columns  center" style="text-align:right; padding: 0px;">
+        <button class="round filterNotSelected" ng-click="setfilters = {}; search(searchparam);" style="margin: 0; padding: 8px;">{{filtersCount()}}  Set  <i class=" fi-x" ></i></button>
+     </div>
+    <div class="small-5 columns  right" style="text-align:right; padding: 0px;">
+
+        <button class="right-off-canvas-toggle filterNotSelected" style="margin: 0; padding: 8px; border-top-left-radius: 1000px; border-bottom-left-radius: 1000px;">Filters <i class=" fi-arrow-right" ></i></button>
+    </div>
+</div>
+
+<div class="fixed off-canvas-fixed">
+
+
+        <aside class="right-off-canvas-menu" style="background: white; margin-top: 55px;">
+            <span ng-repeat="fieldnm in facetorder">
+            <div class="panel" style="padding: 5px; background: white;">
+                <p style="margin-bottom: 0; color: black;" ng-bind="fieldnm | sfnametolabel"/>
+                <ul class="side-nav" style="line-height: 1; padding: 0;">
+                    <li ng-repeat="(valnm, cnt) in data.facetresults[fieldnm]">
+                        <button ng-click="toggleFilter(fieldnm, valnm);  search(searchparam);" class="right-off-canvas-toggle expand radius button small" ng-class="{'filterNotSelected': !isFilterSelected(fieldnm, valnm), 'filterSelected' : isFilterSelected(fieldnm, valnm)}" style="margin-bottom: 0px; border: solid 1px #c6c6c6; padding: 8px;">
+
+                            <i ng-class="{'fi-filter' : !isFilterSelected(fieldnm, valnm),  'fi-x' : isFilterSelected(fieldnm, valnm)}"/>
+                            <span ng-bind="valnm  | sfnametolabel"/> (<span ng-bind="cnt"/>)
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </span>
+        </aside>
+</div>
+
+ -->
+ 
+<div class="row">
+    <div class="hide-for-small-down medium-3 large-3 column">
+
+<!-- 
+        <h6>
+            <strong>Search Results</strong> (<span ng-bind="data.totalrecords"/>)</p>
+        </h6>
+-->
+
+	
+<!--        <div class="panel" style="padding: 5px; background: white;">
+        	<h5 class="subheader homeHead" style="font-size: 90%; text-align: center;" ng-bind="fieldnm | sfnametolabel"/>
+        	<button class="expand radius button small filterNotSelected" ng-click="setfilters = {}; search(searchparam);" style="margin: 0; padding: 8px;"><i class="fi-x"></i><span style="margin-left: 5px;">Reset Filters</span>  </button>
+      </div> -->
+
+        <!-- ***************** FACET RESULTS *************** -->
+        <span ng-repeat="fieldnm in facetorder">
+          <!--   <div class="panel" style="padding: 5px; background: white;">  
+                <p style="margin-bottom: 0; color: black;" ng-bind="fieldnm | sfnametolabel"/> -->
+                <h5 class="subheader homeHead" style="font-size: 90%; text-align: center;" ng-bind="fieldnm | sfnametolabel"/>
+                <ul class="side-nav" style="line-height: 1; padding: 0;">
+                    <li ng-repeat="(valnm, cnt) in data.facetresults[fieldnm]">
+                        <button ng-click="toggleFilter(fieldnm, valnm);  search(searchparam);" class="expand radius button small" ng-class="{'filterNotSelected': !isFilterSelected(fieldnm, valnm), 'filterSelected' : isFilterSelected(fieldnm, valnm)}" style="margin-bottom: 0px; border: solid 1px #c6c6c6; padding: 8px;">
+
+                        <!--     <i ng-class="{'fi-filter' : !isFilterSelected(fieldnm, valnm),  'fi-x' : isFilterSelected(fieldnm, valnm)}"/> -->
+                            <strong>
+                            	<span ng-bind="valnm  | sfnametolabel"/> (<span ng-bind="cnt"/>)
+                            </strong>
+                        </button>
+                    </li>
+                </ul>
+          <!--  </div> -->
+        </span>
+
+    </div>
+
+<!-- ***************** SEARCH ENTRY ROW ***************** -->
+    <div class="large-9 medium-9 column">
+
+        <div class="row">
+
+            <div class="large-12 columns">
+                <div class="row collapse">
+
+                    <div class="small-8 columns">
+                        <input type="text" ng-model="searchparam.txt"
+                            placeholder="Search for..." />
+                    </div>
+                    <div class="small-4 columns">
+                        <!--  <span class="postfix">.com</span> -->
+                        <button class="button postfix" ng-click="search(searchparam)">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- ***************** DATA RESULTS ***************-->
+
+        <div class="row" ng-repeat="o1 in data.res">
+            <a ng-href="#/configure/{{o1.Id}}">
+            <div class="large-2 small-2 columns" style="padding-left: 5px; padding-right: 5px;" >
+                <img ng-src="data:image/JPEG;base64,{{o1.ThumbImageB64__c}}">
+            </div>
+            <div class="large-10 small-10 columns">
+                <p style="font-size: 100%; margin-bottom: 5px;">
+                    <strong>{{o1.Brand__c}}</strong>: {{o1.Name}}
+                </p>
+
+                <ul class="inline-list" style="margin-left: 0px; margin-bottom: 5px;">
+                    <li   style="margin: 0px 2px 2px 0px;">
+                        <span style="font-size: 60%;" class="radius success label">{{o1.Packaging__c}}</span>
+                    </li>
+                    <li   style="margin: 0px 2px 2px 0px;">
+                        <span style="font-size: 60%;" class="radius success label">{{o1.Category__c}}</span>
+                    </li>
+                    <li   style="margin: 0px 2px 2px 0px;">
+                        <span style="font-size: 60%;" class="radius success label">{{o1.Status__c}}</span>
+                    </li>
+                </ul>
+<!--
+                <ul class="inline-list" style="margin-left: 0px; margin-bottom: 5px;">
+                    <li ng-repeat="skill in o1.Available_Tariffs__c"
+                        style="margin: 0px 2px 2px 0px;"><span style="font-size: 60%;"
+                        class="radius success label">{{skill}}</span></li>
+                </ul>
+
+
+                <div class="button-bar">
+                    <ul class="button-group">
+                        <li><a class="tiny button" href="#/configure/{{o1.Id}}">configure</a></li>
+                    </ul>
+                </div>
+-->
+            </div>
+            <hr tyle="margin-top: 15px;" />
+            </a>
+        </div>
+
+    </div>
+</div>
+

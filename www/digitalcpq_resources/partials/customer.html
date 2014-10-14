@@ -1,0 +1,197 @@
+<style>
+
+#gps-wait-spinner {
+  display: block;
+  z-index: 10002;
+//  margin-top: 8px; 
+  width: 20px;
+  height: 20px;
+}
+
+#gps-wait-spinner .spinner-icon {
+  width: 20px;
+  height: 20px;
+
+  border:  solid 2px transparent;
+  border-top-color:  #cccccc;
+  border-left-color: #cccccc;
+  border-radius: 10px;
+
+  -webkit-animation: gps-wait-spinner 400ms linear infinite;
+  -moz-animation:    gps-wait-spinner 400ms linear infinite;
+  -ms-animation:     gps-wait-spinner 400ms linear infinite;
+  -o-animation:      gps-wait-spinner 400ms linear infinite;
+  animation:         gps-wait-spinner 400ms linear infinite;
+}
+
+@-webkit-keyframes gps-wait-spinner {
+  0%   { -webkit-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-moz-keyframes gps-wait-spinner {
+  0%   { -moz-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-o-keyframes gps-wait-spinner {
+  0%   { -o-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-ms-keyframes gps-wait-spinner {
+  0%   { -ms-transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes gps-wait-spinner {
+  0%   { transform: rotate(0deg);   transform: rotate(0deg); }
+  100% { transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+
+</style>
+
+    <!-- search button -->
+    <div class="row" ng-hide="sync">
+        <div class="large-12 columns">
+            <div class="row collapse">
+
+                <div class="small-8 columns">
+                    <input type="text" ng-model="searchtxt" ng-change="search(searchtxt)"
+                           placeholder="i.e. Tesco Maidenhead" />
+                </div>
+                <div class="small-4 columns">
+                    <!--  <span class="postfix">.com</span> -->
+                    <button class="button postfix" ng-click="search(searchtxt)">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sync -->
+    <div class="row" ng-show="sync">
+        <div class="large-12 columns">
+            <button ng-show="custonline" class="button expand" ng-click="syncout()" ng-disabled="waiting">
+            	<div style=" white-space: nowrap;">
+		            	<div ng-show="!waiting" style="display: inline-block; line-height: 28px;" >Sync All</div>
+			            <div ng-if="waiting"  style="display: inline-block;" id="gps-wait-spinner"><div class="spinner-icon"></div></div>
+			            <div ng-show="syncstatus" style="display: inline-block; line-height: 28px; margin-left: 10px;">[{{syncstatus}}]</div>
+            	</div>
+            </button>
+            
+           
+            
+            <div ng-show="!custonline" class="panel">Cannot Sync, You are not Online</div>
+            <div ng-show="results.length == 0 && baskets.length == 0" class="panel">Everything is Saved to Server</div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="row" ng-repeat="o1 in results" ng-click="sync || selectCustomer(o1)">
+        <div class="large-2 small-2 columns">
+            <img ng-src="data:image/JPEG;base64,{{o1.ThumbImageB64__c}}"/>
+            <i ng-show="sync" class="fi-male" style="margin-left: 10px; font-size: 28px;"></i>
+         <!--   <button ng-hide="sync " class="tiny button" ng-click="selectCustomer(o1)">Select</button>  -->
+            <button ng-show="sync && custonline" class="tiny button" ng-click="edit(o1)">Edit</button>
+
+        </div>
+        <div class="large-10 small-10 columns">
+            <h5 style="margin-bottom: 5px;"> {{o1.Name}}</h5>
+            <p style="margin-bottom: 0.25rem;">
+                <i  class="fi-map" style="margin-right: 10px;"/>{{o1.ShippingStreet}} {{o1.ShippingCity}} {{o1.ShippingPostalCode}}
+
+            </p>
+
+            <p style="margin-bottom: 0.25rem;">
+                <i  class="fi-shopping-cart" style="margin-right: 10px;"/> {{o1.Type}}
+            </p>
+            <div class="label success" ng-show="o1.Id == 'LOCAL'">LOCAL</div>
+            <!--  <p style="font-size: 70%; margin-bottom: 5px;">debug Id: {{o1.Id}} _soupEntryId {{o1._soupEntryId}}</p>  -->
+            <div ng-show="syncinfo.errmsg['Contact-'+o1._soupEntryId]"  class="alert-box alert" ng-bind="syncinfo.errmsg['Contact-'+o1._soupEntryId]" />
+
+            <!--
+            <ul class="inline-list" style="margin-left: 0px; margin-bottom: 5px;">
+                <li style=""><i class="fi-mail"><span style="margin-left: 5px; font-size: 90%;" >{{o1.Type}}</span></i></li>
+                <li style=""><i class="fi-mobile-signal"><span style="margin-left: 5px; font-size: 90%;" >{{o1.Industry}}</span></i></li>
+            </ul>
+            -->
+
+        </div>
+        <hr tyle="margin-top: 0px;" />
+    </div>
+
+    <div class="row" ng-show="!shownewform && offercreate">
+        <div class="large-12 small-12 columns">
+            <!--  <img ng-src="https://eu2.salesforce.com/sfc/servlet.shepherd/version/download/{{o1.ThumbImageId__c}}"> -->
+            <button class="tiny expand" ng-click="results = null; shownewform = true; NewCustomer.LastName = searchtxt">Create <strong>{{searchtxt}}</strong></button>
+        </div>
+    </div>
+    <div class="row" ng-show="shownewform">
+        <div class="large-12 small-12 columns">
+            <div ng-form name="newcustomer" >
+                <div  class="small-6 columns">
+                    <label>First Name</label>
+                    <input type="text" ng-model="NewCustomer.FirstName" placeholder="ie John " ng-required="true"/>
+
+                </div>
+                <div  class="small-6 columns">
+                    <label>Last Name</label>
+                    <input type="text" ng-model="NewCustomer.LastName" placeholder="ie Smith" ng-required="true"/>
+
+                </div>
+                <div  class="small-12 columns">
+                    <label>Mobile</label>
+                    <input type="text" ng-model="NewCustomer.MobilePhone" placeholder="ie +44 7777 12312" ng-required="false"/>
+
+                </div>
+                <div  class="small-12 columns">
+                    <label>Email</label>
+                    <input type="email" ng-model="NewCustomer.Email" placeholder="ie JSmith@gmail.com" ng-required="true"/>
+                </div>
+                <div  class="small-12 columns">
+                    <label>Company Name</label>
+                    <input type="text" ng-model="NewCustomer.Company__c" placeholder="ie TelUK LTD" ng-required="false"/>
+                </div>
+                <div  class="small-12 columns">
+                    <label>Mailing PostCode</label>
+                    <input type="text" ng-model="NewCustomer.MailingPostalCode" placeholder="ie SL6 3HF" ng-required="false"/>
+                </div>
+                <div class="small-12 columns" ng-show="errorStr">
+                		<div class="alert-box alert"  ng-bind="errorStr"/>
+                </div> 
+                <div class="large-12 columns">
+                    <ul class="button-group">
+                        <li><button ng-click="submit()"  ng-disabled="newcustomer.$invalid" type="submit" class="button tiny">Save</button></li>
+                        <li><button ng-click="shownewform = false" class="tiny">Cancel</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div class="row" ng-repeat="b in baskets">
+        <div class="large-2 small-2 columns">
+          <i class="fi-shopping-cart" style="margin-left: 10px; font-size: 28px;"></i>
+        </div>
+        <div class="large-10 small-10 columns">
+            <p ><strong>{{b.Name}}</strong> {{b.VisitMetaData__c.outlet.Name}}</p>
+
+            <div ng-repeat="odata in b.VisitMetaData__c.reports">
+                <p style="margin-bottom: 0.25rem;">
+                    <i  class="fi-shopping-cart" style="margin-right: 10px;"/>{{odata.product__r.Name}}
+                </p>
+            </div>
+
+            <!--  <p style="font-size: 70%; margin-bottom: 5px;">debug Id: {{b.Id}} _soupEntryId {{b._soupEntryId}}</p>  -->
+            <div ng-show="syncinfo.errmsg['Visit__c-'+b._soupEntryId]"  class="alert-box alert" ng-bind="syncinfo.errmsg['Visit__c-'+b._soupEntryId]" />
+
+        </div>
+        <hr tyle="margin-top: 0px;" />
+    </div>
+    
+    <div class="row" >
+			<div class="large-12 columns">
+				<button ng-show="sync" class="button expand" ng-click="reinitialiseSoup()" ng-disabled="reinit_wait">
+				       	<div ng-show="!reinit_wait" style="line-height: 28px;" >WARNING: Clear Offline Storage</div>
+				       	<div ng-if="reinit_wait"  id="gps-wait-spinner"><div class="spinner-icon"></div></div>
+				</button>
+		  </div>
+    </div>
+    

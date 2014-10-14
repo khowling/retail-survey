@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="myApp" class="no-js">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Offer Manager</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!--    
+    <link rel="stylesheet" href="{!URLFOR($Resource.bower_components, 'bower_components/foundation/css/normalize.css')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.bower_components, 'bower_components/foundation/css/foundation.css')}"/>
+    <link rel="stylesheet" href="{!URLFOR($Resource.bower_components, 'bower_components/foundation-icon-fonts/foundation-icons.css')}"/>
+	<link rel="stylesheet" href="{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources/css/style.css')}"/>
+-->
+    <link rel="stylesheet" href="bower_components/foundation/css/normalize.css"/>
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css"/>
+    <link rel="stylesheet" href="bower_components/foundation-icon-fonts/foundation-icons.css" />
+    <link rel="stylesheet" href="digitalcpq_resources/css/style.css"/>
+
+<!--    
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/foundation/js/vendor/modernizr.js')}"/>
+-->       
+    <script src="bower_components/foundation/js/vendor/modernizr.js"></script>
+    <script	src="cordova.js" type="text/javascript"></script>
+
+	<script>
+		var inVisualforce = false;
+	    var static_resource_url = './digitalcpq_resources';
+	    var debug_session = '00Dw0000000mVXo!AQIAQP5u5bKbLquMTmhyDkaJgxIZbvddc6EdJcEehKenFqETnfxtBDiSTvZ5uXNyWrQubINVNpD3ckHcpZ_O400nsku.Qrpk';
+        var _sfdccreds = {
+            sf_userid: '{!$User.Id}',
+            sf_host_url: 'https://eu2.salesforce.com',
+            sfdc_api_version: '/services/data/v30.0',
+            session_api: '{!$Api.Session_ID}',
+            clientId: '3MVG99qusVZJwhskfsiYZz9vAn3iWjp4V79_irNpsQl9yNiuTCogBf9YkZH_OK9JmP_hdODiXWhX6RqC.RaH4',
+            refresh_api: ''
+            };
+        if (_sfdccreds.session_api.indexOf("Api.Session_ID") > -1) {
+            console.log ('we are not in a vf page, set debug params');
+            _sfdccreds.session_api = debug_session;
+        } else {
+            static_resource_url = "{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources')}";
+            _sfdccreds.sf_host_url = 'https://c.eu2.visual.force.com';
+            inVisualforce = true;
+        }
+	</script>
+</head>
+
+<body ng-controller="homeCtrl">
+
+    <div class="fixed">
+        <nav class="tab-bar" style="background: white; " data-topbar="1"> <!--  border-bottom: 1px solid #dbdbdb; -->
+
+            <section class="left-small" style="border-right: 0px;">
+                <!--
+                <a class="show-for-small" ng-href="#/">
+                    <img ng-src="{{static_resource_url}}/img/unilever-logo.png" style="margin-left: 5px; vertical-align: top;"/>
+                </a>      -->
+                <a class="" ng-href="#/" style="color: white !important;">
+                    <i class="fi-list ham" style="font-size: 25px; margin: 10px; color: white !important; line-height: 45px;"></i>
+                </a>
+            </section>
+
+            <section class="middle tab-bar-section" style="padding-left: 0px; right: 15rem;">
+                <div style="white-space: nowrap; height: 45px;">
+                    <div style="display: inline-block!important; vertical-align: top;" >
+                       <a href="#/" class="hide-for-small" style="margin-right: 20px;">
+                            <!-- <img class="logoHead" ng-src="{{static_resource_url}}/img/unilever-logo.png"/> -->
+                       </a>
+                    </div>
+
+                        <div style="display: inline-block!important; vertical-align: top; line-height: 1.8;">
+                            <h4 class="hide-for-small" style="font-size: 22px;" ng-bind="mode"></h4>
+                        </div>
+
+                        <div style="display: inline-block!important; margin-top: 5px;" class="switch1 round">
+                          <input id="exampleCheckboxSwitch" type="checkbox" ng-model="homeonline"  ng-hide="inVisualforce"/>
+                          <label for="exampleCheckboxSwitch"  ng-hide="inVisualforce"></label>
+                        </div>
+
+                        <div style="display: inline-block; vertical-align: top; margin-left: 10px;" ng-hide="inVisualforce">
+                            <a  style="font-weight: bold; margin-top: 5px; margin-bottom: 0px; vertical-align: top; padding-bottom: 0.55rem;" class=" button tiny radius" ng-class="{'disabled': !homeonline, 'success': homeonline && syncinfo.tosync > 0 && syncinfo.errcount == 0, 'alert': homeonline && syncinfo.errcount >0 }" ng-href="#/customer?sync">
+                                Sync<span ng-show="syncinfo.tosync > 0" ng-bind="'['+syncinfo.tosync+']'"/>
+                            </a>
+                        </div>
+                </div>
+            </section>
+
+            <section class="right tab-bar-section show-for-medium-down cartWrap" style="left: auto; border-left: 0px;">
+                <a ng-href="#basket" class=" button radius headBtn" style="padding: 5px 20px; margin-bottom: 0px; color: black;">
+                    <span ng-bind="selectedCustomer.Name | limitTo: 9"></span>
+                    <i class="fi-shopping-cart" style="font-size: 18px;margin-left: 5px; margin-right: 5px;"></i>
+                   <!-- <i class="fi-pound" style="font-size: 10px; margin: 2px;"></i> -->
+                    <span ng-bind="selectedBasket.items"></span>
+                </a>
+            </section>
+
+        </nav>
+	</div> <!-- Fixed -->
+    <div style="height: 20px;"></div>
+
+    <!------------------- The Model when adding things to a cart ------------------------>
+    <style> .firstModal:before {
+        content: "";
+        border: inset 6px;
+        border-color: transparent transparent #fff transparent;
+        border-bottom-style: solid;
+        position: absolute;
+        top: -12px;
+        left: 90%;
+        z-index: 99;
+    }</style>
+
+
+
+    <div id="orderconf_modal" class="firstModal reveal-modal tiny" data-reveal="1" style="left: 50%;  width: 45%;  top: 50px; min-height: 270px;">
+        <p>Thank you for reporting your Visit, you can now see your Stats</p>
+        <hr/>
+        <a class="button expand" href="#/" onclick="jQuery('#orderconf_modal').foundation('reveal', 'close');">Continue</a>
+    </div>
+
+    <!------------------------------- Main Page ---------------------------->
+    <div class="row collapse">
+        <!-- LEFT THIRD -->
+        <div class="hide-for-small-down large-3 medium-3  columns" >
+
+            <div class="slide-animate" ng-if="sidecart" ng-include="static_resource_url+ '/partials/basket.html'"></div>
+            <div class="panel" ng-if="sf">
+                <a href="#"><img ng-src="{{sf.context.user.profilePhotoUrl}}" /></a>
+                <hr/>
+                <h4 ng-bind="sf.context.user.fullName"></h4>
+            </div>
+        </div>
+
+        <!-- RIGHT TWO THIRDS -->
+        <div class="large-9 medium-9 small-12 columns">
+                <div class="ngViewContainer">
+                    <div  class="ng-view view-animate"></div>
+                </div>
+        </div>
+    </div>
+
+    <!--
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/foundation/js/vendor/jquery.js')}"></script>
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/foundation/js/foundation.min.js')}"></script>
+    -->
+    <script src="bower_components/foundation/js/vendor/jquery.js"></script>
+    <script src="bower_components/foundation/js/foundation.min.js"></script>
+
+    <script>
+        $(document).foundation();
+    </script>
+    <!--
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/angular/angular.js')}"></script>
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/angular-route/angular-route.min.js')}"></script>
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/angular-resource/angular-resource.min.js')}"></script>
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/angular-animate/angular-animate.min.js')}"></script>
+    <script src="{!URLFOR($Resource.bower_components, 'bower_components/angular-cookies/angular-cookies.min.js')}"></script>
+    -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <!--
+    <script src="{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources/js/module-sfdata.js')}"></script>
+    <script src="{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources/js/productsearchctrl.js')}"></script>
+    <script src="{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources/js/configure.js')}"></script>
+    <script src="{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources/js/customer.js')}"></script>
+    <script src="{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources/js/visit.js')}"></script>
+    <script src="{!URLFOR($Resource.digitalcpq_resources, 'digitalcpq_resources/js/app.js')}"></script>
+    -->
+    <script src="digitalcpq_resources/js/module-sfdata.js"></script>
+    <script src="digitalcpq_resources/js/productsearchctrl.js"></script>
+    <script src="digitalcpq_resources/js/configure.js"></script>
+    <script src="digitalcpq_resources/js/customer.js"></script>
+    <script src="digitalcpq_resources/js/visit.js"></script>
+    <script src="digitalcpq_resources/js/app.js"></script>
+
+</body>
+</html>

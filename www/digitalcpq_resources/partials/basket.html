@@ -1,0 +1,86 @@
+
+	<div class="row collapse">
+		<div class="large-11 medium-11 large-left medium-left columns">
+
+            <h5 class="subheader homeHead" style="text-align: center;">Current Visit {{selectedVisit.Name}}</h5>
+			<div class="">
+			
+	        <a ng-hide="selectedVisit.outlet" class="button expand vodPurple" ng-href="#/customer{{!sidecart && '?fromURL=/basket' || ''}}" style="padding-top: 5px; padding-bottom: 5px; padding-right: 10px;padding-left: 10px;">
+	        	<div style="float: left; margin: 8px;">Find Store</div>
+	        	<i class="fi-home" style="font-size: 25px; margin: 2px; float: right;"></i>
+	        </a>
+	    
+	                
+	     	<div id="offerWrap" class="" ng-show="selectedVisit.outlet">
+	     		<h5 class="subheader homeHead" style="text-align: center;">Store <a ng-href="#/customer">[change]</a></h5>
+	     				
+								 <!-- <h5 class="mun">Customer</h5>   -->
+							
+							
+		       <i class="fi-home  mun" style="font-size: 25px; margin-left: 5px; float: left;"></i>
+					 <p style="float: left; max-width: 75%; margin: 5px; margin-left: 15px;">{{selectedVisit.outlet.Name}}</p>
+	
+				   <hr style="margin: 8px; border: none;"/>
+				   <i class="fi-shopping-cart  mun" style="font-size: 25px; margin: 2px; float: left;"></i>
+				   <p style="float: left; max-width: 75%; margin: 5px; margin-left: 15px;">{{selectedVisit.outlet.Type}}</p>
+				   <div style="clear: both;"></div>
+				   <!-- 
+				   <hr />
+				   <label >Id</label>
+				   <p>{{selectedCustomer.Id}} {{selectedCustomer._soupEntryId}}</p>
+		   			-->
+	         
+	     </div>
+	  </div>  
+	     
+		<div id="offerWrap" style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;margin-bottom: 0px;">
+		
+			<div class="klarge-12  kcolumns">
+			
+			<h5 class="subheader homeHead" style="text-align: center;">Product Reports</h5>
+			
+			<ul class="side-nav" style="padding: 0px;">
+				<li  ng-repeat="sel in selectedVisit.reports" style="line-height:1; padding:0; margin-top: 5px;">
+					<div class="row collapse">
+					  <div class="small-9 columns">
+					 		<a ng-href="#/configure/{{sel.product__r.Id}}?idx={{$index}}"><div ng-bind="sel.product__r.Name"/></a>
+		                    <div ng-repeat="(n, v) in sel.config" ng-bind="v" class="label success round" style="margin: 2px;"/>
+					 	</div>
+					 	<div class="small-2 columns">
+		                    <!-- <i class="fi-pound" style="font-size: 18px; margin: 2px;"></i> -->
+                            <span ng-bind="sel.Status__c"/>
+					    </div>
+				  </div>
+				</li>
+			</ul>
+
+					<a class="button  expand pOrder vodPurple" ng-href="#/search">Add Report</a>
+				</div>
+		</div>	
+		
+		<!--
+		<div class="" style="margin-bottom: 15px;">	
+			<div class="totalWrap">
+				<span class="l">Total</span>
+				<span class="r" ng-bind="selectedBasket.total"/>
+			</div>
+
+		</div>
+		-->
+
+		<div class="" >
+			<button ng-show="selectedVisit.items > 0 && selectedVisit.outlet" ng-click="insertSFDC();" class="button expand vodPurple"  style="padding-top: 10px; padding-bottom: 10px; padding-right: 10px;padding-left: 10px;">
+	        	<div style="float: left; margin: 8px;">Save Visit</div>
+	        	<i class="fi-shopping-cart" style="font-size: 25px; margin: 2px; float: right; color: white!important;"></i>
+	        </button>
+	        
+	        <button class="tiny" ng-show="selectedBasket.items > 0 || selectedCustomer" ng-click="resetBasket();">Reset Cart</button>
+	        
+		</div>
+
+	</div>
+</div>
+                
+	
+	
+

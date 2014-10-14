@@ -1,0 +1,89 @@
+<style>
+
+    #gps-wait-spinner {
+        display: block;
+        z-index: 10002;
+    //  margin-top: 8px;
+        width: 20px;
+        height: 20px;
+    }
+
+    #gps-wait-spinner .spinner-icon {
+        width: 20px;
+        height: 20px;
+
+        border:  solid 2px transparent;
+        border-top-color:  #cccccc;
+        border-left-color: #cccccc;
+        border-radius: 10px;
+
+        -webkit-animation: gps-wait-spinner 400ms linear infinite;
+        -moz-animation:    gps-wait-spinner 400ms linear infinite;
+        -ms-animation:     gps-wait-spinner 400ms linear infinite;
+        -o-animation:      gps-wait-spinner 400ms linear infinite;
+        animation:         gps-wait-spinner 400ms linear infinite;
+    }
+
+    @-webkit-keyframes gps-wait-spinner {
+        0%   { -webkit-transform: rotate(0deg);   transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+    }
+    @-moz-keyframes gps-wait-spinner {
+        0%   { -moz-transform: rotate(0deg);   transform: rotate(0deg); }
+        100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+    }
+    @-o-keyframes gps-wait-spinner {
+        0%   { -o-transform: rotate(0deg);   transform: rotate(0deg); }
+        100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+    }
+    @-ms-keyframes gps-wait-spinner {
+        0%   { -ms-transform: rotate(0deg);   transform: rotate(0deg); }
+        100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+    }
+    @keyframes gps-wait-spinner {
+        0%   { transform: rotate(0deg);   transform: rotate(0deg); }
+        100% { transform: rotate(360deg); transform: rotate(360deg); }
+    }
+
+
+</style>
+
+
+<!-- Results -->
+<div class="row" ng-repeat="o1 in visits" ng-click="sync || selectVisit(o1)">
+    <div class="large-2 small-2 columns">
+        <!-- <img ng-src="data:image/JPEG;base64,{{o1.ThumbImageB64__c}}"/> -->
+        <i ng-show="sync" class="fi-male" style="margin-left: 10px; font-size: 28px;"></i>
+        <!--   <button ng-hide="sync " class="tiny button" ng-click="selectCustomer(o1)">Select</button>  -->
+        <div class="label" ng-bind="o1.Status__c"/>
+    </div>
+    <div class="large-10 small-10 columns">
+        <p ><strong>{{o1.Name}}</strong> {{o1.VisitMetaData__c.outlet.Name}}</p>
+
+        <div ng-repeat="odata in o1.VisitMetaData__c.reports">
+            <p style="margin-bottom: 0.25rem;">
+                <i  class="fi-shopping-cart" style="margin-right: 10px;"/>{{odata.product__r.Name}}
+            </p>
+        </div>
+
+<!--
+        <p style="margin-bottom: 0.25rem;">
+            <i  class="fi-shopping-cart" style="margin-right: 10px;"/> {{o1.Type}}
+        </p>
+ -->
+        <div class="label success" ng-show="o1.Id == 'LOCAL'">LOCAL</div>
+        <!--  <p style="font-size: 70%; margin-bottom: 5px;">debug Id: {{o1.Id}} _soupEntryId {{o1._soupEntryId}}</p>  -->
+        <div ng-show="syncinfo.errmsg['Contact-'+o1._soupEntryId]"  class="alert-box alert" ng-bind="syncinfo.errmsg['Contact-'+o1._soupEntryId]" />
+
+        <!--
+        <ul class="inline-list" style="margin-left: 0px; margin-bottom: 5px;">
+            <li style=""><i class="fi-mail"><span style="margin-left: 5px; font-size: 90%;" >{{o1.Type}}</span></i></li>
+            <li style=""><i class="fi-mobile-signal"><span style="margin-left: 5px; font-size: 90%;" >{{o1.Industry}}</span></i></li>
+        </ul>
+        -->
+
+    </div>
+    <hr tyle="margin-top: 0px;" />
+</div>
+
+    
